@@ -2,7 +2,7 @@
 
 ![cover](assets/cover.jfif)
 
-Companion repository for [STOP using passwords for Snowflake automation]().
+Companion repository for my [STOP using passwords for Snowflake automation](https://medium.com/@nominalnz/stop-using-passwords-for-snowflake-automation-7545470fbe65) Medium article.
 
 1. [Prerequisites: Setting Up Your Environment](terraform/prerequisites)
 1. [Deploying the OAuth Server](terraform/integration)
