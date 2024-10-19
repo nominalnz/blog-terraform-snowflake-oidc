@@ -12,10 +12,6 @@ terraform {
       source  = "hashicorp/random"
       version = "3.6.3"
     }
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "4.2.0"
-    }
     github = {
       source  = "integrations/github"
       version = "6.3.0"

@@ -1,14 +1,13 @@
-name: Run Azure CLI Login with OpenID Connect
+name: My cool Snowflake workflow
 on: [workflow_dispatch]
 
 permissions:
-  id-token: write # Require write permission to Fetch an OIDC token.
+  id-token: write # Required to fetch an OIDC token
   contents: read
 
 jobs:
-  test:
+  my-cool-job:
     runs-on: ubuntu-latest
-    environment: Production
     env:
       SNOWFLAKE_CONNECTIONS_DEFAULT_USER: ${{ secrets.AZURE_PRINCIPAL_ID }}
       SNOWFLAKE_CONNECTIONS_DEFAULT_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -35,10 +34,21 @@ jobs:
         azcliversion: latest
         inlineScript: |
           access_token=$(az account get-access-token --scope ${{ secrets.OAUTH_SERVER_IDENTIFIER_URI }}/.default --query accessToken -o tsv)
-          echo "SNOWFLAKE_CONNECTIONS_DEFAULT_TOKEN=$access_token" >> "$GITHUB_ENV"
+          echo "::add-mask::$access_token"
+          echo "SNOWFLAKE_CONNECTIONS_DEFAULT_TOKEN=$access_token" >> "$GITHUB_ENV"  
+
+    - name: Create config.toml
+      run: |
+        cat << EOF > config.toml
+        default_connection_name = "default"
+        
+        [connections]
+        [connections.default]
+        user = ""
+        EOF
 
     - name: Install Snowflake CLI
-      uses: Snowflake-Labs/snowflake-cli-action@v1
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
         cli-version: latest
         default-config-file-path: config.toml

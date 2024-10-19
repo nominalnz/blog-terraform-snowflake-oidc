@@ -20,5 +20,5 @@ output "azure_tenant_id" {
 }
 
 output "snowflake_account" {
-  value = data.snowflake_current_account.this
+  value = github_actions_secret.snowflake_account.plaintext_value
 }
