@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Connect to the Snowflake account using the Access Token, execute SQL, and exit
+snowsql \
+    -a $SNOWFLAKE_ACCOUNT \
+    -u $(terraform output -raw oauth_client_principal_id) \
+    -r SNOWSQL_RL \
+    --authenticator oauth \
+    --token "$(./get-access-token)" \
+    -q "SELECT current_user();" \
+    <<EOF
+!exit
+EOF

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Make the curl request and capture the output
+response=$(curl -s -X POST -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" \
+    --data-urlencode "client_id=$(terraform output -raw oauth_client_client_id)" \
+    --data-urlencode "client_secret=$(terraform output -raw oauth_client_secret)" \
+    --data-urlencode "grant_type=client_credentials" \
+    --data-urlencode "scope=$(terraform output -raw oauth_server_identifier_uri)/.default" \
+    "https://login.microsoftonline.com/$(terraform output -raw azure_tenant_id)/oauth2/v2.0/token")
+
+# Extract the access token from the JSON response
+access_token=$(echo $response | jq -r '.access_token')
+
+# Print only the access token
+echo $access_token
